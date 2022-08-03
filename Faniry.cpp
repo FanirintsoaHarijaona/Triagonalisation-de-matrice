@@ -73,14 +73,14 @@ vector<vector<float>> triangulariser(vector<vector<float>>& matrice,vector<float
 //on intervertit la ligne du pivot avec la ligne de l'élément de la diagonale
          int lignePivot =(int)pivot(matrice,k,dim)[1];
          cout<<"lignePivot:"<<lignePivot<<endl;
+         cout<<"max:"<<pivot(matrice,k,dim)[0]<<endl;
          if(lignePivot!=k){
+            cout<<"Echange"<<endl;
             echangeLignes(matrice[k],matrice[lignePivot-1],dim);
 //variable temporaire pour stocker la valeur de la matrice second membre
 //Quand on intervertit les lignes de la matrice A, on intevertit aussi celui
 //du seconde membre de l'équation
             float tmp = b[k];
-            cout<<"tmp:"<<tmp;
-            cout<<"Pivot:"<<b[lignePivot-1];
             b[k] = b[lignePivot-1];
             b[lignePivot-1] = tmp;
          }
@@ -140,16 +140,18 @@ void resolution(vector<vector<float>> &matrice,vector<float> &second,int &dim){
 vector<float> pivot(vector<vector<float>>& matrice, int ligne,int dim){
 //fonction qui choisit le pivot
     vector <float> result;
-    float max = matrice[0][ligne];
-    float lignePivot = 0;
+    float max = 0;
+    float lignePivot = matrice[ligne][ligne];
 //Les lignes possédant déja un pivot ne sont plus analysées donc reste inchangées
 //après l'interversion
-    for (float i=ligne;i<dim;i++){
+    for (int i=0;i<dim;i++){
+        if(i>=ligne){
         if(max <fabs(matrice[i][ligne])){
-            max = matrice[ligne][i];
-//ligne du plu grand dans la colonnes
+            max = matrice[i][ligne];
+//ligne du plus grand dans la colonnes
             lignePivot = i+1;
             }
+        }
     }
     result.push_back(max);
     result.push_back(lignePivot);
@@ -158,12 +160,24 @@ vector<float> pivot(vector<vector<float>>& matrice, int ligne,int dim){
 
 void echangeLignes(vector<float>&matricePivotInitial,vector<float>&matricePivotMax,int &dim){
 //echange des éléments de 2 lignes
+    for(int j=0;j<dim;j++){
+        cout<<"matricePivotInitial["<<j<<"]"<<matricePivotInitial[j]<<endl;
+    }
+    for(int j=0;j<dim;j++){
+        cout<<"matricePivotMax["<<j<<"]"<<matricePivotMax[j]<<endl;
+    }
     for(int i = 0; i<dim;i++){
         float tmp = 0;
         tmp =matricePivotInitial[i];
         matricePivotInitial[i]= matricePivotMax[i];
         matricePivotMax[i] = tmp;
     }   
+    for(int j=0;j<dim;j++){
+        cout<<"matricePivotInitial["<<j<<"]"<<matricePivotInitial[j]<<endl;
+    }
+    for(int j=0;j<dim;j++){
+        cout<<"matricePivotMax["<<j<<"]"<<matricePivotMax[j]<<endl;
+    }
 }
 
 //fonction qui affiche une matrice à 2 dimensions
