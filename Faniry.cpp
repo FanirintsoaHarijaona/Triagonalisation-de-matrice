@@ -12,7 +12,7 @@ void afficherMatrice(vector<vector<float>>& matrice,int& dim);
 vector<float> pivot(vector<vector<float>>& matrice, int colonne,int dim);
 void echangeLignes(vector<float>&matricePivotInitial,vector<float>&matricePivotMax,int &dim);
 void initialiserMatrice(vector<vector<float>> &matrice,vector<float> &second,int &dim);
-void resolution(vector<vector<float>> &matrice,vector<float> &second);
+void resolution(vector<vector<float>> &matrice,vector<float> &second,int &dim);
 
 int main(){
     cout<<"Triangularisation par la méthode de Gauss de la matrice\n";
@@ -28,7 +28,8 @@ int main(){
     cout<<"Matrice triangularisée :"<<endl;
     afficherMatrice(result, dim);
     cout<<"Résolution de l'équation"<<endl;
-    resolution(matrice,second);
+    resolution(matrice,second,dim);
+    return 0;
 }
 
 void initialiserMatrice(vector<vector<float>> &matrice,vector<float> &second,int &dim){
@@ -71,15 +72,18 @@ vector<vector<float>> triangulariser(vector<vector<float>>& matrice,vector<float
 //Si la ligne du pivot ne correspond à la diagonale ,
 //on intervertit la ligne du pivot avec la ligne de l'élément de la diagonale
          int lignePivot =(int)pivot(matrice,k,dim)[1];
+         cout<<"lignePivot:"<<lignePivot<<endl;
          if(lignePivot!=k){
             echangeLignes(matrice[k],matrice[lignePivot-1],dim);
-         }
 //variable temporaire pour stocker la valeur de la matrice second membre
 //Quand on intervertit les lignes de la matrice A, on intevertit aussi celui
 //du seconde membre de l'équation
-        float tmp = b[k];
-        b[k] = b[lignePivot-1];
-        b[lignePivot-1] = tmp;
+            float tmp = b[k];
+            cout<<"tmp:"<<tmp;
+            cout<<"Pivot:"<<b[lignePivot-1];
+            b[k] = b[lignePivot-1];
+            b[lignePivot-1] = tmp;
+         }
 /***après le choix du pivot et interversion,on calcule les autres coefficients
     les coefficients en dessous du pivot seront nuls
     tandis que ceux des autres sont calculées à partir du formule
@@ -104,9 +108,9 @@ vector<vector<float>> triangulariser(vector<vector<float>>& matrice,vector<float
     return matrice;
      }
 
-void resolution(vector<vector<float>> &matrice,vector<float> &second){
+void resolution(vector<vector<float>> &matrice,vector<float> &second,int &dim){
 //fonction résolution du l'équation AX = B
-    int dim = matrice.size();
+    
 //vecteur qui contient les inconnues du système
     vector<float> x ;
 //initialisation des inconnues
